@@ -1,6 +1,8 @@
 const microcomponent = require('microcomponent')
 const html = require('bel')
 
+const IntersectionObserver = window.IntersectionObserver
+
 class ScrollList {
   constructor () {
     const component = microcomponent()
