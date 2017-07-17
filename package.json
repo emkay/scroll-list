@@ -1,6 +1,6 @@
 {
   "name": "scroll-list",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Scroll through a list of data quickly",
   "main": "index.js",
   "dependencies": {
@@ -26,7 +26,12 @@
     "type": "git",
     "url": "git+https://github.com/emkay/scroll-list.git"
   },
-  "keywords": ["infinite", "scroll", "intersection", "observer"],
+  "keywords": [
+    "infinite",
+    "scroll",
+    "intersection",
+    "observer"
+  ],
   "author": {
     "name": "Michael Matuzak",
     "email": "mmatuzak@gmail.com",
