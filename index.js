@@ -7,8 +7,8 @@ class ScrollList {
   constructor () {
     const component = microcomponent()
     component.on('render', this.render)
-    component.on('update', this.update)
-    component.on('load', this.load)
+    component.on('update', this._update)
+    component.on('load', this._load)
 
     return component
   }
@@ -35,11 +35,11 @@ class ScrollList {
     return this.state.node
   }
 
-  update (props) {
+  _update (props) {
     return props.index !== this.props.index
   }
 
-  load () {
+  _load () {
     const nodes = this.state.node.querySelectorAll('li')
     this.state.lastNode = nodes[nodes.length - 5]
 
