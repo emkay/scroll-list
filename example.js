@@ -1,11 +1,13 @@
 const html = require('bel')
 const ScrollList = require('.')
-const sl = new ScrollList()
+const sl = new ScrollList({
+  root: 'tbody'
+})
 
 const data = []
 
 for (var i = 0; i < 10000; i++) {
-  data.push(html`<li>Here is a dang element ${i}</li>`)
+  data.push(html`<tr><td>dang element ${i}</td><td>another cell</td></tr>`)
 }
 
 const batch = 500
@@ -17,4 +19,7 @@ const el = sl.render({
   index
 })
 
-document.body.appendChild(el)
+const table = html`<table><thead><th>Message</th><th>Another Thing</th></table>`
+table.appendChild(el)
+
+document.body.appendChild(table)

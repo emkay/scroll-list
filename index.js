@@ -4,8 +4,19 @@ const html = require('bel')
 const IntersectionObserver = window.IntersectionObserver
 
 class ScrollList {
-  constructor () {
-    const component = microcomponent()
+  constructor (opts) {
+    opts = opts || {}
+    opts.root = opts.root || 'ul'
+
+    const selector = opts.root === 'ul' ? 'li' : 'tr'
+
+    const component = microcomponent({
+      state: {
+        // loaded: false,
+        root: opts.root,
+        selector
+      }
+    })
     component.on('render', this.render)
     component.on('update', this._update)
     component.on('load', this._load)
@@ -15,6 +26,7 @@ class ScrollList {
 
   render () {
     const {batch, data, index} = this.props
+    const {root, selector} = this.state
 
     this.state.batch = batch
     this.state.index = index
@@ -22,25 +34,40 @@ class ScrollList {
 
     const visibleData = data.slice(0, batch + index)
 
-    this.state.node = html`<ul>${visibleData.map(el => el)}</ul>`
+    switch (root) {
+      case 'ul':
+        this.state.node = html`<ul>${visibleData.map(el => el)}</ul>`
+        break
+      case 'tbody':
+        this.state.node = html`<tbody>${visibleData.map(el => el)}</tbody>`
+        break
+      default:
+        throw new Error('`root` element should be either ul or tbody')
+    }
 
     if (this.state.lastNode) {
-      const newNodes = this.state.node.querySelectorAll('li')
+      const newNodes = this.state.node.querySelectorAll(selector)
       const newLastNode = newNodes[newNodes.length - 5]
       this.state.io.observe(newLastNode)
       this.state.io.unobserve(this.state.lastNode)
       this.state.lastNode = newLastNode
     }
 
+    // @TODO: in some situations `load` is not being emitted.
+    // if (!this.state.loaded) this._load()
+
     return this.state.node
   }
 
   _update (props) {
-    return props.index !== this.props.index
+    return (props.index !== this.props.index) ||
+      (props.data.length !== this.props.data.length)
   }
 
   _load () {
-    const nodes = this.state.node.querySelectorAll('li')
+    // this.state.loaded = true
+    const {selector} = this.state
+    const nodes = this.state.node.querySelectorAll(selector)
     this.state.lastNode = nodes[nodes.length - 5]
 
     this.state.io = new IntersectionObserver(

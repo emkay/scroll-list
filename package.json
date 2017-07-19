@@ -9,8 +9,11 @@
   },
   "devDependencies": {
     "bankai": "^8.1.1",
+    "browserify": "^14.4.0",
     "standard": "^10.0.2",
     "standard-version": "^4.2.0",
+    "tape": "^4.7.0",
+    "tape-run": "^3.0.0",
     "weallbehave": "^1.2.0",
     "weallcontribute": "^1.0.8"
   },
@@ -18,7 +21,7 @@
     "dev": "bankai --debug example.js",
     "lint": "standard",
     "release": "git checkout master; git pull origin master && npm run test && standard-version && git push --follow-tags origin master; npm publish",
-    "test": "standard",
+    "test": "standard && browserify test.js | tape-run",
     "update-coc": "weallbehave -o . && git add CODE_OF_CONDUCT.md && git commit -m 'docs(coc): updated CODE_OF_CONDUCT.md'",
     "update-contrib": "weallcontribute -o . && git add CONTRIBUTING.md && git commit -m 'docs(contributing): updated CONTRIBUTING.md'"
   },
